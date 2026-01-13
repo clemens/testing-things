@@ -1,9 +1,3 @@
 FROM nginx:alpine
 
-COPY entrypoint.sh /entrypoint.sh
-
-RUN chmod +x /entrypoint.sh && apk add --no-cache openssh
-
-ENTRYPOINT ["sh", "/entrypoint.sh"]
-
-CMD ["nginx", "-g", "daemon off;"]
+RUN mkdir -p /docker-entrypoint.d && echo "apk add --no-cache openssh; chmod 400 /root/.ssh/id_ed25519" > /docker-entrypoint.d/00-ssh.sh & chmod +x /docker-entrypoint.d/00-ssh.sh
